@@ -1,0 +1,4 @@
+---
+# defaults file for builder
+workdir: /tmp/project
+target: /tmp/project/target/hello-1.0.war

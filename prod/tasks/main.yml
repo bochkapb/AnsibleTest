@@ -1,0 +1,14 @@
+---
+# tasks file for prod
+- name: installing necessary packages on prod
+  become: yes
+  apt:
+    name: tomcat8
+    state: present
+
+- name: copy war-file
+  become: yes
+  copy:
+    src: /tmp/hello-1.0.war
+    dest: "{{ webapps_dir }}"
+  notify: restart tomcat

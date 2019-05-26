@@ -1,0 +1,3 @@
+---
+# defaults file for prod
+webapps_dir: /var/lib/tomcat8/webapps/hello-1.0.war

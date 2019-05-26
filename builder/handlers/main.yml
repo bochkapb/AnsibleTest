@@ -1,0 +1,11 @@
+---
+# handlers file for builder
+- name: building project
+  shell: cd {{ workdir }} && mvn package
+  notify: fetch war-file
+
+- name: fetch war-file
+  fetch:
+    src: "{{ target }}"
+    dest: /tmp/hello-1.0.war
+    flat: yes

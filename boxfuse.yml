@@ -1,0 +1,54 @@
+---
+- name: installing builder
+  hosts: db
+  become: yes
+
+  tasks:
+  - name: install git
+    apt:
+      name: git
+      state: present
+
+  - name: install jdk
+    apt:
+      name: default-jdk
+      state: present
+
+  - name: install maven
+    apt:
+      name: maven
+      state: present
+
+  - name: clone repo
+    git:
+      repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+      dest: /tmp/project
+
+  - name: building project
+    shell: cd  /tmp/project && mvn package
+
+  - name: fetch file
+    fetch:
+      src: /tmp/project/target/hello-1.0.war
+      dest: /tmp/hello-1.0.war
+      flat: yes
+
+- name: installing tomcat
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: install tomcat8
+    apt:
+      name: tomcat8
+      state: present
+
+  - name: copy hello.war
+    copy:
+      src: /tmp/hello-1.0.war
+      dest: /var/lib/tomcat8/webapps/hello-1.0.war
+
+  - name: start tomcat8
+    service:
+      name: tomcat8
+      state: started

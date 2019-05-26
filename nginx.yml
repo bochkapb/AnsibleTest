@@ -1,0 +1,21 @@
+---
+- name: nginx homework
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: installing Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: let's modify index.html
+      lineinfile:
+        dest: /var/www/html/index.nginx-debian.html
+        regexp: '^<h1>Welcome to nginx!</h1>$'
+        line: '<h1><script> document.write(new Date().toLocaleDateString()); </script></h1>'
+
+    - name: starting nginx
+      service:
+        name: nginx
+        state: restarted
